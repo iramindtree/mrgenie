@@ -17,6 +17,9 @@ public class IRAService {
 		if (responseBean.getResult().getAction().equalsIgnoreCase("input.welcome")) {
 			serviceResponse.setSpeech("Hi Vijendra");
 		}
+		if(responseBean.getResult().getAction().equalsIgnoreCase("check_out.info")){
+			serviceResponse.setSpeech("Your check-out is on 18th of Feburary at 12 pm");
+		}
 		return serviceResponse;
 	}
 }
