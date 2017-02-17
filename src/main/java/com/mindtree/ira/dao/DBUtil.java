@@ -20,15 +20,16 @@ public class DBUtil {
 		Connection conn = null;
 		URI dbUri;
 		try {
-				dbUri = new URI(System.getenv("DATABASE_URL"));
-			
-			 	String username = dbUri.getUserInfo().split(":")[0];
-		        String password = dbUri.getUserInfo().split(":")[1];
-		        String dbUrl = "dbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
+				//dbUri = new URI(System.getenv("JDBC_DATABASE_URL"));
+				
+			 	/*String username = dbUri.getUserInfo().split(":")[0];
+		        String password = dbUri.getUserInfo().split(":")[1];*/
+		        String dbUrl = System.getenv("JDBC_DATABASE_URL");
+		        System.out.println("dbUrl" + dbUrl);
 		        
 		        Class.forName("org.postgresql.Driver");
 		        
-		        conn = DriverManager.getConnection(dbUrl, username, password);
+		        conn = DriverManager.getConnection(dbUrl);
 		        
 		        System.out.println("Connection Established "+ conn.getSchema());
 		        
