@@ -33,10 +33,10 @@ public class DBUtil {
 		        
 		        System.out.println("Connection Established "+ conn.getSchema());
 		        
-		} catch (URISyntaxException e) {
+		} /*catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		catch (ClassNotFoundException e) {
 			// TODO: handle exception
 			e.printStackTrace();
