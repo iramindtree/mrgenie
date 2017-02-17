@@ -35,11 +35,11 @@ public class DBUtil {
 		} /*catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		catch (ClassNotFoundException e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		}
+		}*/
 		catch(SQLException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
