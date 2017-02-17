@@ -27,7 +27,6 @@ public class DBUtil {
 		        String dbUrl = System.getenv("JDBC_DATABASE_URL");
 		        System.out.println("dbUrl" + dbUrl);
 		        
-		        Class.forName("org.postgresql.Driver");
 		        
 		        conn = DriverManager.getConnection(dbUrl);
 		        
