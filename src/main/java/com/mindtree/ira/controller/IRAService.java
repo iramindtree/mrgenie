@@ -15,7 +15,7 @@ public class IRAService {
 	public IRAServiceResponse processResponse(AgentResponseBean responseBean) {
 		IRAServiceResponse serviceResponse = new IRAServiceResponse();
 		if (responseBean.getResult().getAction().equalsIgnoreCase("input.welcome")) {
-			serviceResponse.setSpeech("Hi Viji");
+			serviceResponse.setSpeech("Hi Vijendra");
 		}
 		return serviceResponse;
 	}
