@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mindtree.ira.dao.CustomerDAO;
 import com.mindtree.ira.dao.DBUtil;
 import com.mindtree.ira.response.bean.AgentResponseBean;
 import com.mindtree.ira.response.bean.IRAServiceResponse;
@@ -26,7 +27,6 @@ public class IRAServiceController {
     public String process(@RequestBody String jsonString) throws IOException {
     	System.out.println("Input jsonString: \n" + jsonString);
     	
-    	DBUtil.getDBConnection();
     	
     	AgentResponseBean responseBean = new ObjectMapper().readValue(jsonString, AgentResponseBean.class);
     	
@@ -34,6 +34,13 @@ public class IRAServiceController {
     	//service.processResponse(responseBean);
     	
     	IRAServiceResponse successResponse = service.processResponse(responseBean);//buildResponseObject(ResponseObjectType.SUCCESS_DATA);
+    	
+    	//TODO: Testing DB conncetion.
+    	
+    	System.out.println(new CustomerDAO().getAllCustomers());
+    	
+    	
+    	
     	return parseJsonToString(successResponse);
         //return jsonString;
     }
