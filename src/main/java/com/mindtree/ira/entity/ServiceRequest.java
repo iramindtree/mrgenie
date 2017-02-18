@@ -1,7 +1,6 @@
 package com.mindtree.ira.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 
 
@@ -9,36 +8,23 @@ import java.util.Date;
  * The persistent class for the service_request database table.
  * 
  */
-@Entity
-@Table(name="service_request")
-@NamedQuery(name="ServiceRequest.findAll", query="SELECT s FROM ServiceRequest s")
 public class ServiceRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="service_request_id")
 	private String serviceRequestId;
 
-	@Column(name="customer_id")
 	private String customerId;
 
-	@Column(name="department_id")
 	private String departmentId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="execution_time")
 	private Date executionTime;
 
-	@Column(name="property_id")
 	private int propertyId;
 
-	@Column(name="request_desc")
 	private String requestDesc;
 
-	@Column(name="request_status")
 	private String requestStatus;
 
-	@Column(name="room_no")
 	private String roomNo;
 
 	public ServiceRequest() {

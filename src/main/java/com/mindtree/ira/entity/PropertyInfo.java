@@ -1,30 +1,21 @@
 package com.mindtree.ira.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
 
 /**
  * The persistent class for the property_info database table.
  * 
  */
-@Entity
-@Table(name="property_info")
-@NamedQuery(name="PropertyInfo.findAll", query="SELECT p FROM PropertyInfo p")
 public class PropertyInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="property_id")
 	private int propertyId;
 
-	@Column(name="property_code")
 	private String propertyCode;
 
-	@Column(name="property_geo_coordinates")
 	private String propertyGeoCoordinates;
 
-	@Column(name="property_name")
 	private String propertyName;
 
 	public PropertyInfo() {

@@ -1,7 +1,6 @@
 package com.mindtree.ira.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 
 
@@ -16,14 +15,10 @@ public class ConsumptionInfo implements Serializable {
 	
 	private int consumptionId;
 
-	@Column(name="consumption_amount")
 	private double consumptionAmount;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="consumption_date")
 	private Date consumptionDate;
 
-	@Column(name="reservation_conf_no")
 	private String reservationConfNo;
 
 	public ConsumptionInfo() {

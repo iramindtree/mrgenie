@@ -1,21 +1,17 @@
 package com.mindtree.ira.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * The primary key class for the department_action database table.
  * 
  */
-@Embeddable
 public class DepartmentActionPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="department_code")
 	private String departmentCode;
 
-	@Column(name="action_code")
 	private String actionCode;
 
 	public DepartmentActionPK() {

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mindtree.ira.dao.CustomerDAO;
-import com.mindtree.ira.dao.DBUtil;
 import com.mindtree.ira.response.bean.AgentResponseBean;
 import com.mindtree.ira.response.bean.IRAServiceResponse;
 
