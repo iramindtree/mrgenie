@@ -55,6 +55,16 @@ public class IRAService {
 			serviceResponse.setDisplayText("Our Swimming Pool will be open from 08:00 AM to 06:00 PM on all days. To use the pool, you need to have swim attrire. Id you don't have one, would you like me to get one for you? ");
 			serviceResponse.setSpeech("Our Swimming Pool will be open from 08:00 AM to 06:00 PM on all days. To use the pool, you need to have swim attrire. Id you don't have one, would you like me to get one for you? ");
 		}
+		else if(inputAction.equalsIgnoreCase("pool.corssselling")){
+			Context poolCrossSelling = new Context();
+			poolCrossSelling.setLifespan(1);
+			poolCrossSelling.setName("pool_cross_selling_confirm");
+			Context[] poolCrossSellingContextArray = {poolCrossSelling};
+			
+			serviceResponse.setContextOut(poolCrossSellingContextArray);
+			serviceResponse.setDisplayText("What size shorts fit you well? ");
+			serviceResponse.setSpeech("What size shorts fit you well? ");
+		}
 		else if(inputAction.equalsIgnoreCase("order.pool_attrire")){
 			
 			serviceResponse.setDisplayText("Got it. Your attrire will be delivered to your room.");
