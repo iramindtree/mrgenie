@@ -65,7 +65,7 @@ public class IRAService {
 			serviceResponse.setDisplayText("What size shorts fit you well? ");
 			serviceResponse.setSpeech("What size shorts fit you well? ");
 		}
-		else if(inputAction.equalsIgnoreCase("order.pool_attrire")){
+		else if(inputAction.equalsIgnoreCase("order.pool_attire")){
 			
 			serviceResponse.setDisplayText("Got it. Your attrire will be delivered to your room.");
 			serviceResponse.setSpeech("Got it. Your attrire will be delivered to your room.");
