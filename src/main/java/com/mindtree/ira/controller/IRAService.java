@@ -9,6 +9,7 @@ import com.mindtree.ira.dao.CustomerDAO;
 import com.mindtree.ira.dao.ReservationDAO;
 import com.mindtree.ira.entity.ReservationInfo;
 import com.mindtree.ira.response.bean.AgentResponseBean;
+import com.mindtree.ira.response.bean.Context;
 import com.mindtree.ira.response.bean.IRAServiceResponse;
 
 /**
@@ -42,6 +43,15 @@ public class IRAService {
 					reservationDAO);
 			
 			
+		}
+		else{
+			IRAServiceResponse iraServiceResponse = new IRAServiceResponse();
+			Context testContext = new Context();
+			testContext.setName("Unknown_Action_Context");
+			Context[] responseContextArray = new Context[1];
+			iraServiceResponse.setContextOut(responseContextArray);
+			iraServiceResponse.setSpeech("I am not sure how to searve that. Let me see if u can find someone to help you with this request.");
+			iraServiceResponse.setDisplayText("I am not sure how to searve that. Let me see if u can find someone to help you with this request.");
 		}
 		return serviceResponse;
 	}

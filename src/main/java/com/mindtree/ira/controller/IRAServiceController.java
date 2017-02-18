@@ -34,12 +34,6 @@ public class IRAServiceController {
     	
     	IRAServiceResponse successResponse = service.processResponse(responseBean,customerId);//buildResponseObject(ResponseObjectType.SUCCESS_DATA);
     	
-    	//TODO: Testing DB conncetion.
-    	
-    	System.out.println(new CustomerDAO().getAllCustomers());
-    	
-    	
-    	
     	return parseJsonToString(successResponse);
         //return jsonString;
     }
