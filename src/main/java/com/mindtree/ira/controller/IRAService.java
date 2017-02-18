@@ -47,6 +47,7 @@ public class IRAService {
 		else{
 			Context testContext = new Context();
 			testContext.setName("Unknown_Action_Context");
+			testContext.setLifespan(1);
 			Context[] responseContextArray = new Context[1];
 			responseContextArray[0] = testContext;
 			serviceResponse.setContextOut(responseContextArray);
