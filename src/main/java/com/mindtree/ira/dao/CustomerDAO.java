@@ -23,8 +23,7 @@ public class CustomerDAO {
 		List<Customer> customers = new ArrayList<Customer>();
 		String query = "SELECT CUST_ID, CUST_FNAME, CUST_LNAME, CUST_EMAIL, CUST_GENDER FROM CUSTOMER_INFO LIMIT 25";
 		try{
-			Connection conn = DBUtil.getDBConnection();
-			Statement stmt = conn.createStatement();
+			Statement stmt = getConnection();
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
 				String customerId = rs.getString("CUST_ID");
@@ -40,6 +39,28 @@ public class CustomerDAO {
 			sqle.printStackTrace();
 		}
 		return customers;
+	}
+
+	private Statement getConnection() throws SQLException {
+		Connection conn = DBUtil.getDBConnection();
+		Statement stmt = conn.createStatement();
+		return stmt;
+	}
+
+	public String getCustomerName(String custId) {
+		String customerName=null;
+		String query="SELECT CUST_FNAME FROM CUSTOMER_INFO LIMIT 25";
+		try {
+			Statement stmt=getConnection();
+			ResultSet rs=stmt.executeQuery(query);
+			while(rs.next()){
+				customerName=rs.getString("CUST_FNAME");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return customerName;
 	}
 
 }

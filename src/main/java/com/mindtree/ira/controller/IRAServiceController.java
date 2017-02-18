@@ -28,11 +28,11 @@ public class IRAServiceController {
     	
     	
     	AgentResponseBean responseBean = new ObjectMapper().readValue(jsonString, AgentResponseBean.class);
-    	
+    	String customerId="12345";
     	IRAService service=new IRAService();
     	//service.processResponse(responseBean);
     	
-    	IRAServiceResponse successResponse = service.processResponse(responseBean);//buildResponseObject(ResponseObjectType.SUCCESS_DATA);
+    	IRAServiceResponse successResponse = service.processResponse(responseBean,customerId);//buildResponseObject(ResponseObjectType.SUCCESS_DATA);
     	
     	//TODO: Testing DB conncetion.
     	
