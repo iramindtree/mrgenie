@@ -82,14 +82,18 @@ public class ReservationDAO {
 	
 	public ReservationInfo getReservtionInfo(String custId) {
 		ReservationInfo reservationInfo = new ReservationInfo();
-		String query = "SELECT CHECKOUT_DATETIME from RESERVATION WHERE CUSTOMER_ID = '"
+		String query = "SELECT RESERVATION_CONF_NO, ARRIVAL_DATE, CHECKIN_DATETIME, CHECKOUT_DATETIME, CUSTOMER_ID  from RESERVATION_INFO WHERE CUSTOMER_ID = '"
 				+ custId + "' LIMIT 25";
 		Statement stmt = null;
 		try {
 			stmt = getConnection();
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				reservationInfo.setCheckoutDatetime(rs.getDate("CHECKOUT_DATETIME"));
+				reservationInfo.setCheckoutDatetime(rs.getTimestamp("CHECKOUT_DATETIME"));
+				reservationInfo.setArrivalDate(rs.getDate("ARRIVAL_DATE"));
+				reservationInfo.setCheckinDatetime(rs.getDate("CHECKIN_DATETIME"));
+				reservationInfo.setCustomerId(rs.getString("CUSTOMER_ID"));
+				reservationInfo.setReservationConfNo(rs.getInt("RESERVATION_CONF_NO"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
