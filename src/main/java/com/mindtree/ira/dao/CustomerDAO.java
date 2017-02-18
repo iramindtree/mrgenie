@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mindtree.ira.entity.Customer;
+import com.mindtree.ira.entity.PmsReservationInfo;
 
 /**
  * @author M1031960
@@ -78,5 +79,34 @@ public class CustomerDAO {
 		}
 		return customerName;
 	}
+
+	public PmsReservationInfo getReservationFromPMS(int reservationConformationNumber){
+        PmsReservationInfo pmsReservationInfo = new PmsReservationInfo();
+        String query = "SELECT RESERVATION_CONF_NO, ROOM_NUMBER, PROPERTY_ID from pms_reservation_info WHERE RESERVATION_CONF_NO = " + reservationConformationNumber + "";
+        Statement stmt = null;
+        try {
+              stmt = getConnection();
+              ResultSet rs = stmt.executeQuery(query);
+              while (rs.next()) {
+                    int reservationConfNumber = rs.getInt("RESERVATION_CONF_NO");
+                    String roomNumber = rs.getString("ROOM_NUMBER");
+                    String propertyId = rs.getString("PROPERTY_ID");
+                    pmsReservationInfo.setPropertyId(propertyId);
+                    pmsReservationInfo.setReservationConfNo(reservationConfNumber);
+                    pmsReservationInfo.setRoomNumber(roomNumber);
+              }
+        } catch (SQLException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+        } finally {
+              try {
+                    stmt.close();
+              } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+              }
+        }
+        return pmsReservationInfo;
+  }
 
 }

@@ -4,9 +4,15 @@
 package com.mindtree.ira.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import com.mindtree.ira.dao.CustomerDAO;
+import com.mindtree.ira.dao.CustomerProfileInfoDAO;
 import com.mindtree.ira.dao.ReservationDAO;
+import com.mindtree.ira.entity.CustomerProfileInfo;
+import com.mindtree.ira.entity.PmsReservationInfo;
 import com.mindtree.ira.entity.ReservationInfo;
 import com.mindtree.ira.response.bean.AgentResponseBean;
 import com.mindtree.ira.response.bean.Context;
@@ -18,14 +24,17 @@ import com.mindtree.ira.response.bean.IRAServiceResponse;
  */
 public class IRAService {
 
-	public IRAServiceResponse processResponse(AgentResponseBean responseBean,String custId) {
+	public IRAServiceResponse processResponse(AgentResponseBean responseBean,int reservationId) {
 		IRAServiceResponse serviceResponse = new IRAServiceResponse();
 		CustomerDAO customerDAO=new CustomerDAO();
 		ReservationDAO reservationDAO=new ReservationDAO();
+CustomerProfileInfoDAO customerProfileInfoDAO=new CustomerProfileInfoDAO();
 		String inputAction = responseBean.getResult().getAction();
 		
 		if (inputAction.equalsIgnoreCase("input.welcome")) {
-			String customerName = customerDAO.getCustomerName(custId);
+			ReservationInfo reservationInfo=getReservationInfoByReservationId(reservationId,reservationDAO);
+			String custId=reservationInfo.getCustomerId();
+String customerName = customerDAO.getCustomerName(custId);
 			if (null == customerName) {
 				serviceResponse.setSpeech("Hi");
 			} else {
@@ -33,15 +42,41 @@ public class IRAService {
 			}
 		}
 		else if(inputAction.equalsIgnoreCase("check_out.info")){
-			ReservationInfo reservationInfo = getReservationInfo(custId,
-					reservationDAO);
+			ReservationInfo reservationInfo=getReservationInfoByReservationId(reservationId,reservationDAO);
 			SimpleDateFormat prounanceDateString = new SimpleDateFormat("dd MMM YYYY");
 			SimpleDateFormat prounanceTimeString = new SimpleDateFormat("HH:mm a");
-			String checkOutDate= reservationInfo.getCheckoutDatetime().toString();
 			serviceResponse.setSpeech("Your check-out is "+ prounanceDateString.format(reservationInfo.getCheckoutDatetime()) +" at "+ prounanceTimeString.format(reservationInfo.getCheckoutDatetime()));
 		}else if(responseBean.getResult().getAction().equalsIgnoreCase("order.coffee")){
-			ReservationInfo reservationInfo = getReservationInfo(custId,
-					reservationDAO);
+			String delivery="",kindofcoffee="",size="",typeofmilk="";
+			ReservationInfo reservationInfo=getReservationInfoByReservationId(reservationId,reservationDAO);
+			CustomerProfileInfo customerProfileInfo=customerProfileInfoDAO.getCustomerProfileInfo(reservationInfo.getCustomerId());
+			PmsReservationInfo pmsReservationInfo=customerDAO.getReservationFromPMS(reservationId);
+			String roomNumber=pmsReservationInfo.getRoomNumber();
+			String customerSugarLevelPreference=customerProfileInfo.getCustomerSugarLevelPreference();
+			String customerTempraturePreference=customerProfileInfo.getCustomerTemperaturePreference();
+			if(!responseBean.getResult().getParameters().isEmpty()){
+				Map<String,Object> parameters=responseBean.getResult().getParameters();
+				Object deliveryObject=parameters.get("delivery");
+				List<String> deliveryList=(ArrayList<String>)deliveryObject;
+				if(deliveryList.size() !=0){
+					 delivery=deliveryList.get(0);
+				}
+				Object kindofcoffeeObject=parameters.get("kindofcoffee");
+				List<String> kindofcoffeeList=(ArrayList<String>) kindofcoffeeObject;
+				if(kindofcoffeeList.size()!=0){
+					kindofcoffee=kindofcoffeeList.get(0);
+				}else{
+					kindofcoffee=customerProfileInfo.getCustomerMilkPreferece();
+				}
+				Object typeofmilkObject=parameters.get("typeofmilk");
+				if(null!=typeofmilkObject){
+					typeofmilk=typeofmilkObject.toString();
+				}else{
+					typeofmilk=customerProfileInfo.getCustomerMilkPreferece();
+				}
+			}
+			
+			serviceResponse.setSpeech("We got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" will be served to your room " + roomNumber+" in next 10 mins");
 			
 			
 		}
@@ -86,6 +121,12 @@ public class IRAService {
 	private ReservationInfo getReservationInfo(String custId,
 			ReservationDAO reservationDAO) {
 		ReservationInfo reservationInfo=reservationDAO.getReservtionInfo(custId);
+		return reservationInfo;
+	}
+	
+	private ReservationInfo getReservationInfoByReservationId(int resevationId,
+			ReservationDAO reservationDAO) {
+		ReservationInfo reservationInfo=reservationDAO.getReservtionInfoByReservationId(resevationId);
 		return reservationInfo;
 	}
 }

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mindtree.ira.dao.CustomerDAO;
 import com.mindtree.ira.response.bean.AgentResponseBean;
 import com.mindtree.ira.response.bean.IRAServiceResponse;
 
@@ -28,11 +27,13 @@ public class IRAServiceController {
     	
     	
     	AgentResponseBean responseBean = new ObjectMapper().readValue(jsonString, AgentResponseBean.class);
-    	String customerId="9741657696";
+    	int reservationId=86904389;
     	IRAService service=new IRAService();
     	//service.processResponse(responseBean);
     	
-    	IRAServiceResponse successResponse = service.processResponse(responseBean,customerId);//buildResponseObject(ResponseObjectType.SUCCESS_DATA);
+    	IRAServiceResponse successResponse = service.processResponse(responseBean,reservationId);//buildResponseObject(ResponseObjectType.SUCCESS_DATA);
+    	
+    	//TODO: Testing DB conncetion.
     	
     	return parseJsonToString(successResponse);
         //return jsonString;
