@@ -55,7 +55,7 @@ public class IRAService {
 			serviceResponse.setDisplayText("Our Swimming Pool will be open from 08:00 AM to 06:00 PM on all days. To use the pool, you need to have swim attrire. Id you don't have one, would you like me to get one for you? ");
 			serviceResponse.setSpeech("Our Swimming Pool will be open from 08:00 AM to 06:00 PM on all days. To use the pool, you need to have swim attrire. Id you don't have one, would you like me to get one for you? ");
 		}
-		else if(inputAction.equalsIgnoreCase("pool.corssselling")){
+		else if(inputAction.equalsIgnoreCase("pool.crossselling")){
 			Context poolCrossSelling = new Context();
 			poolCrossSelling.setLifespan(1);
 			poolCrossSelling.setName("pool_cross_selling_confirm");
