@@ -45,13 +45,12 @@ public class IRAService {
 			
 		}
 		else{
-			IRAServiceResponse iraServiceResponse = new IRAServiceResponse();
 			Context testContext = new Context();
 			testContext.setName("Unknown_Action_Context");
 			Context[] responseContextArray = new Context[1];
-			iraServiceResponse.setContextOut(responseContextArray);
-			iraServiceResponse.setSpeech("I am not sure how to searve that. Let me see if u can find someone to help you with this request.");
-			iraServiceResponse.setDisplayText("I am not sure how to searve that. Let me see if u can find someone to help you with this request.");
+			serviceResponse.setContextOut(responseContextArray);
+			serviceResponse.setSpeech("I am not sure how to serve that. Let me see if u can find someone to help you with this request.");
+			serviceResponse.setDisplayText("I am not sure how to serve that. Let me see if u can find someone to help you with this request.");
 		}
 		return serviceResponse;
 	}
