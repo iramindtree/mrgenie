@@ -13,6 +13,7 @@ public class PropertyDAO {
 	
 	public PropertyAmenity getPropertyAmenityInfo(String propertyId, String amenityCode){
 		PropertyAmenity amenity = new PropertyAmenity();
+		return amenity;
 	}
 
 }
