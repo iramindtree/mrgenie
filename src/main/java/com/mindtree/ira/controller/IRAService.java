@@ -48,6 +48,7 @@ public class IRAService {
 			Context testContext = new Context();
 			testContext.setName("Unknown_Action_Context");
 			Context[] responseContextArray = new Context[1];
+			responseContextArray[0] = testContext;
 			serviceResponse.setContextOut(responseContextArray);
 			serviceResponse.setSpeech("I am not sure how to serve that. Let me see if u can find someone to help you with this request.");
 			serviceResponse.setDisplayText("I am not sure how to serve that. Let me see if u can find someone to help you with this request.");
