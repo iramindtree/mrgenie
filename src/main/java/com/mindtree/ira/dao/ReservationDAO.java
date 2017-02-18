@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mindtree.ira.entity.Customer;
+import com.mindtree.ira.entity.ReservationInfo;
 
 /**
  * @author M1031960
  *
  */
-public class CustomerDAO {
+public class ReservationDAO {
 	
 	
 	public List<Customer> getAllCustomers() {
@@ -57,7 +58,7 @@ public class CustomerDAO {
 
 	public String getCustomerName(String custId) {
 		String customerName = null;
-		String query = "SELECT CUST_FNAME FROM CUSTOMER_INFO where CUST_ID= '"+custId+"'";
+		String query = "SELECT CUST_FNAME FROM CUSTOMER_INFO LIMIT 25";
 		Statement stmt = null;
 		try {
 			stmt = getConnection();
@@ -78,5 +79,31 @@ public class CustomerDAO {
 		}
 		return customerName;
 	}
+	
+	public ReservationInfo getReservtionInfo(String custId) {
+		ReservationInfo reservationInfo = new ReservationInfo();
+		String query = "SELECT checkoutDatetime from RESERVATION WHERE customerId= '"
+				+ custId + "' LIMIT 25";
+		Statement stmt = null;
+		try {
+			stmt = getConnection();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				reservationInfo.setCheckoutDatetime(rs.getDate("checkoutDate"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return reservationInfo;
+	}
+	
 
 }
