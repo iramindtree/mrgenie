@@ -106,7 +106,7 @@ String customerName = customerDAO.getCustomerName(custId);
 				startTime=propertyAmenity.getOpenTime().toString();
 				endTime=propertyAmenity.getClosingTime().toString();
 				 SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
-				speech="Our Swimming Pool will be open from "+_12HourSDF.format(propertyAmenity.getOpenTime())+" to "+_12HourSDF.format(propertyAmenity.getClosingTime())+", To use the pool, you need to have swim attrire. If you don't have one, would you like me to get one for you? ";
+				speech="Our Swimming Pool will be open from "+_12HourSDF.format(propertyAmenity.getOpenTime())+" to "+_12HourSDF.format(propertyAmenity.getClosingTime())+", To use the pool, you need to have swim attire. If you don't have one, would you like me to get one for you? ";
 			}
 			else{
 				speech="Sorry Swimming Pool will closed Today";
@@ -130,8 +130,8 @@ String customerName = customerDAO.getCustomerName(custId);
 		}
 		else if(inputAction.equalsIgnoreCase("order.pool_attire")){
 			
-			serviceResponse.setDisplayText("Got it. Your attrire will be delivered to your room.");
-			serviceResponse.setSpeech("Got it. Your attrire will be delivered to your room.");
+			serviceResponse.setDisplayText("Got it. Your attire will be delivered to your room.");
+			serviceResponse.setSpeech("Got it. Your attire will be delivered to your room.");
 		}
 		else{
 			Context testContext = new Context();
