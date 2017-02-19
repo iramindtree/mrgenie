@@ -78,7 +78,7 @@ String customerName = customerDAO.getCustomerName(custId);
 				}
 			}
 			
-			serviceResponse.setSpeech("We got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room " + roomNumber+" in next 10 mins");
+			serviceResponse.setSpeech("We got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room number" + roomNumber+" in next 10 mins");
 			
 			
 		}
