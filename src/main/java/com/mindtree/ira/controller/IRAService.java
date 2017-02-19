@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.util.StringUtils;
+
 import com.mindtree.ira.dao.CustomerDAO;
 import com.mindtree.ira.dao.CustomerProfileInfoDAO;
 import com.mindtree.ira.dao.ReservationDAO;
@@ -69,14 +71,14 @@ String customerName = customerDAO.getCustomerName(custId);
 					kindofcoffee=customerProfileInfo.getCustomerMilkPreferece();
 				}
 				Object typeofmilkObject=parameters.get("typeofmilk");
-				if(null!=typeofmilkObject){
+				if(!StringUtils.isEmpty(typeofmilkObject)){
 					typeofmilk=typeofmilkObject.toString();
 				}else{
 					typeofmilk=customerProfileInfo.getCustomerMilkPreferece();
 				}
 			}
 			
-			serviceResponse.setSpeech("We got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" will be served to your room " + roomNumber+" in next 10 mins");
+			serviceResponse.setSpeech("We got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room " + roomNumber+" in next 10 mins");
 			
 			
 		}

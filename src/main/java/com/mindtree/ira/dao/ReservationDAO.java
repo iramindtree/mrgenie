@@ -111,7 +111,7 @@ public class ReservationDAO {
 	
 	public ReservationInfo getReservtionInfoByReservationId(int reservationId) {
 		ReservationInfo reservationInfo = new ReservationInfo();
-		String query = "SELECT RESERVATION_CONF_NO, ARRIVAL_DATE, CHECKIN_DATETIME, CHECKOUT_DATETIME, CUSTOMER_ID  from RESERVATION_INFO WHERE CUSTOMER_ID = " + reservationId + "";
+		String query = "SELECT RESERVATION_CONF_NO, ARRIVAL_DATE, CHECKIN_DATETIME, CHECKOUT_DATETIME, CUSTOMER_ID  from RESERVATION_INFO WHERE RESERVATION_CONF_NO = " + reservationId + "";
 		Statement stmt = null;
 		try {
 			stmt = getConnection();
