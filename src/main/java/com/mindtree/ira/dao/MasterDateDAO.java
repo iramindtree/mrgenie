@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.mindtree.ira.entity.MasterDate;
 import com.mindtree.ira.entity.PropertyAmenity;
 import com.mindtree.ira.entity.PropertyInfo;
 
@@ -15,12 +16,31 @@ import com.mindtree.ira.entity.PropertyInfo;
  * @author M1031960
  *
  */
-public class PropertyDAO {
+public class MasterDateDAO {
 	
-	public PropertyAmenity getPropertyAmenityInfo(String propertyId, String amenityCode){
+	public MasterDate getMasterDate(){
 		
-		PropertyAmenity amenity = new PropertyAmenity();
-		return amenity;
+		MasterDate masterDate=new MasterDate();
+		String query = "SELECT master_date FROM master_date";
+		
+		Statement stmt = null;
+		try {
+			stmt = getConnection();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				masterDate.setMasterDate(rs.getDate("master_date"));
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return masterDate;
 	}
 	
 	public PropertyInfo getPropertyInfo(String propertyCode) {
@@ -55,7 +75,7 @@ public class PropertyDAO {
 	public PropertyAmenity getPropertyAmenity(int propertyId,String amenity){
 		PropertyAmenity propertyAmenity=new PropertyAmenity();
 		String query = "SELECT AMENITY_ID,PROPERTY_ID,AMENITY_NAME,OPERATING_DAYS,OPEN_TIME,CLOSING_TIME FROM property_amenities where PROPERTY_ID= "
-				+ propertyId + " and AMENITY_NAME='"+amenity+"'";
+				+ propertyId + "and AMENITY_NAM E='"+amenity+"'";
 		Statement stmt = null;
 		try {
 			stmt = getConnection();

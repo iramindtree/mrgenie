@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.mindtree.ira.entity.CustomerProfileInfo;
-import com.mindtree.ira.entity.ReservationInfo;
 
 /**
  * @author M1031960
