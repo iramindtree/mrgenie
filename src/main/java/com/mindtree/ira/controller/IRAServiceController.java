@@ -1,8 +1,13 @@
 package com.mindtree.ira.controller;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,9 +27,17 @@ public class IRAServiceController {
     
   //@RequestMapping("/")
     @RequestMapping(method = RequestMethod.POST)
-    public String process(@RequestBody String jsonString) throws IOException {
+    public String process(@RequestBody String jsonString, @RequestHeader Map<String, String> header) throws IOException {
+    	//TODO: In coming JSON and header printing for testing. To be removed.
     	System.out.println("Input jsonString: \n" + jsonString);
-    	
+    	Set<String> httpHeaderKeySet = header.keySet();
+    	for (Iterator iterator = httpHeaderKeySet.iterator(); iterator
+				.hasNext();) {
+			String headerKey = (String) iterator.next();
+			
+			System.out.println(headerKey + " = " + header.get(headerKey) );
+			
+		}
     	
     	AgentResponseBean responseBean = new ObjectMapper().readValue(jsonString, AgentResponseBean.class);
     	int reservationId=86904389;
