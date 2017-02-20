@@ -17,7 +17,7 @@ import com.mindtree.ira.entity.ServiceRequest;
 public class ServiceRequestDAO {
 	
 	public void insertServiceRequest(ServiceRequest serviceRequest) {
-		SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String dateCurrent=simpleDateFormat.format(serviceRequest.getExecutionTime());
 		String query = "INSERT INTO service_request(SERVICE_REQUEST_ID,CUSTOMER_ID,PROPERTY_ID,ROOM_NO,DEPARTMENT_ID,REQUEST_DESC,REQUEST_STATUS,EXECUTION_TIME) VALUES ('"+serviceRequest.getServiceRequestId()+"','"+serviceRequest.getCustomerId()+"',"+serviceRequest.getPropertyId()+",'"+serviceRequest.getRoomNo()+"','"+serviceRequest.getDepartmentId()+"','"+serviceRequest.getRequestDesc()+"','"+serviceRequest.getRequestStatus()+"','"+dateCurrent+"')";
 		System.out.println(query);

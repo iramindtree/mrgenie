@@ -152,8 +152,28 @@ String customerName = customerDAO.getCustomerName(custId);
 		}
 		else if(inputAction.equalsIgnoreCase("order.pool_attire")){
 			
-			serviceResponse.setDisplayText("Got it. Your attire will be delivered to your room.");
-			serviceResponse.setSpeech("Got it. Your attire will be delivered to your room.");
+			ReservationInfo reservationInfo=getReservationInfoByReservationId(reservationId,reservationDAO);
+			PmsReservationInfo pmsReservationInfo=customerDAO.getReservationFromPMS(reservationId);
+			PropertyInfo propertyInfo=propertyDAO.getPropertyInfo(pmsReservationInfo.getPropertyId());
+			
+			serviceResponse.setDisplayText("Got it. Your attire will be delivered to your room number "+pmsReservationInfo.getRoomNumber());
+			serviceResponse.setSpeech("Got it. Your attire will be delivered to your number room "+pmsReservationInfo.getRoomNumber());
+			
+			
+			ServiceRequest serviceRequest=new ServiceRequest();
+			serviceRequest.setCustomerId(reservationInfo.getCustomerId());
+			serviceRequest.setDepartmentId("POS");
+			serviceRequest.setExecutionTime(new Date());
+			serviceRequest.setPropertyId(propertyInfo.getPropertyId());
+			serviceRequest.setRequestDesc("pool attire request");
+			serviceRequest.setRequestStatus("Requested");
+			serviceRequest.setRoomNo(pmsReservationInfo.getRoomNumber());
+			
+			Date dNow = new Date();
+	        SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
+	        String datetime = ft.format(dNow);
+			serviceRequest.setServiceRequestId(datetime);
+			serviceRequestDAO.insertServiceRequest(serviceRequest);
 		}
 		else{
 			Context testContext = new Context();
