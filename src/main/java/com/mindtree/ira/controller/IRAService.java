@@ -124,7 +124,7 @@ public class IRAService {
 			
 			if(!responseBean.getResult().getParameters().isEmpty()){
 				Map<String,Object> parameters=responseBean.getResult().getParameters();
-				Object brandObject=parameters.get("beed_brand");
+				Object brandObject=parameters.get("beer_brand");
 				List<String> brandList=(ArrayList<String>)brandObject;
 				if(brandList.size() !=0){
 					 brand=brandList.get(0);
