@@ -38,7 +38,8 @@ public class IRAService {
 		ReservationDAO reservationDAO=new ReservationDAO();
 		PropertyDAO propertyDAO=new PropertyDAO();
 		MasterDateDAO masterDateDAO=new MasterDateDAO();
-CustomerProfileInfoDAO customerProfileInfoDAO=new CustomerProfileInfoDAO();
+		CustomerProfileInfoDAO customerProfileInfoDAO=new CustomerProfileInfoDAO();
+		
 		String inputAction = responseBean.getResult().getAction();
 		
 		if (inputAction.equalsIgnoreCase("input.welcome")) {
@@ -157,4 +158,8 @@ String customerName = customerDAO.getCustomerName(custId);
 		ReservationInfo reservationInfo=reservationDAO.getReservtionInfoByReservationId(resevationId);
 		return reservationInfo;
 	}
+	
+	public int getReservationConformationNumberForDeviceId(String deviceId){
+    	return new CustomerDAO().getCustomerReservationByDeviceId(deviceId);
+    }
 }

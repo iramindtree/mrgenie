@@ -108,5 +108,28 @@ public class CustomerDAO {
         }
         return pmsReservationInfo;
   }
+	
+	public int getCustomerReservationByDeviceId(String deviceId){
+		PmsReservationInfo pmsReservationInfo = new PmsReservationInfo();
+        String query = "SELECT DEVICE_ID, CUSTOMER_ID, RESERVATION_CONF_NO FROM CUSTOMER_DEVICE_INFO WHERE DEVICE_ID='"+deviceId+"'";
+        Statement stmt = null;
+        try {
+              stmt = getConnection();
+              ResultSet rs = stmt.executeQuery(query);
+              rs.next();
+              return rs.getInt("RESERVATION_CONF_NO");
+        } catch (SQLException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+        } finally {
+              try {
+                    stmt.close();
+              } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+              }
+        }
+		return -1;
+	}
 
 }

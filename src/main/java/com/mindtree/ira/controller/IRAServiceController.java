@@ -2,6 +2,7 @@ package com.mindtree.ira.controller;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mindtree.ira.response.bean.AgentContextBean;
 import com.mindtree.ira.response.bean.AgentResponseBean;
 import com.mindtree.ira.response.bean.IRAServiceResponse;
 
@@ -40,10 +42,12 @@ public class IRAServiceController {
 		}
     	
     	AgentResponseBean responseBean = new ObjectMapper().readValue(jsonString, AgentResponseBean.class);
-    	int reservationId=86904389;
+    	
+    	AgentContextBean agentContextBean = getAgentContextByName(responseBean.getResult().getContexts(), "user_device_context");
+    	String deviceId = (String)agentContextBean.getParameters().get("deviceId");
     	IRAService service=new IRAService();
     	//service.processResponse(responseBean);
-    	
+    	int reservationId= service.getReservationConformationNumberForDeviceId(deviceId);
     	IRAServiceResponse successResponse = service.processResponse(responseBean,reservationId);//buildResponseObject(ResponseObjectType.SUCCESS_DATA);
     	
     	//TODO: Testing DB conncetion.
@@ -77,4 +81,15 @@ public class IRAServiceController {
 		return jsonString;
 	}
     
+    public AgentContextBean getAgentContextByName(List<AgentContextBean> agentContexts, String agentContextName){
+    	for (Iterator iterator = agentContexts.iterator(); iterator.hasNext();) {
+			AgentContextBean agentContextBean = (AgentContextBean) iterator
+					.next();
+			if(agentContextBean.getName().equals(agentContextName))
+				return agentContextBean;
+			
+		}
+    	return null;
+    }
+       
 }
