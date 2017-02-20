@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -139,7 +140,15 @@ public class IRAService {
 			}
 			if(brand.equalsIgnoreCase("Heineken")){
 				speach = "Sorry "+ customerName +", looks like "+ brand +" beer is out of stock at the moment. Instead would you like to have Budwiser beer?";
-				serviceResponse.setContextOut((AgentContextBean[])responseBean.getResult().getContexts().toArray());
+				List<AgentContextBean> existingContext = responseBean.getResult().getContexts();
+				AgentContextBean[] existingContextArray = new AgentContextBean[20];
+				for (int i=0; i <existingContext.size(); i++) {
+					AgentContextBean agentContextBean = existingContext.get(i);
+					existingContextArray[i] = agentContextBean;
+					
+				}
+				
+				serviceResponse.setContextOut(existingContextArray);
 			}
 			else{
 				speach = "Great! Your order of Budwiser beer will be served to your room " + roomNumber + " in next 10mins";
