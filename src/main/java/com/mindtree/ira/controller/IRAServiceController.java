@@ -44,7 +44,13 @@ public class IRAServiceController {
     	AgentResponseBean responseBean = new ObjectMapper().readValue(jsonString, AgentResponseBean.class);
     	
     	AgentContextBean agentContextBean = getAgentContextByName(responseBean.getResult().getContexts(), "user_device_context");
-    	String deviceId = (String)agentContextBean.getParameters().get("deviceId");
+    	String deviceId = "";
+    	if(agentContextBean != null){
+    		deviceId = (String)agentContextBean.getParameters().get("deviceId");
+    	}
+    	else{
+    		deviceId = "869100020602312";
+    	}
     	IRAService service=new IRAService();
     	//service.processResponse(responseBean);
     	int reservationId= service.getReservationConformationNumberForDeviceId(deviceId);
