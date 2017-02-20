@@ -6,6 +6,7 @@ package com.mindtree.ira.controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +17,14 @@ import com.mindtree.ira.dao.CustomerProfileInfoDAO;
 import com.mindtree.ira.dao.MasterDateDAO;
 import com.mindtree.ira.dao.PropertyDAO;
 import com.mindtree.ira.dao.ReservationDAO;
+import com.mindtree.ira.dao.ServiceRequestDAO;
 import com.mindtree.ira.entity.CustomerProfileInfo;
 import com.mindtree.ira.entity.MasterDate;
 import com.mindtree.ira.entity.PmsReservationInfo;
 import com.mindtree.ira.entity.PropertyAmenity;
 import com.mindtree.ira.entity.PropertyInfo;
 import com.mindtree.ira.entity.ReservationInfo;
+import com.mindtree.ira.entity.ServiceRequest;
 import com.mindtree.ira.response.bean.AgentResponseBean;
 import com.mindtree.ira.response.bean.Context;
 import com.mindtree.ira.response.bean.IRAServiceResponse;
@@ -39,6 +42,7 @@ public class IRAService {
 		PropertyDAO propertyDAO=new PropertyDAO();
 		MasterDateDAO masterDateDAO=new MasterDateDAO();
 		CustomerProfileInfoDAO customerProfileInfoDAO=new CustomerProfileInfoDAO();
+		ServiceRequestDAO serviceRequestDAO=new ServiceRequestDAO();
 		
 		String inputAction = responseBean.getResult().getAction();
 		
@@ -62,6 +66,7 @@ String customerName = customerDAO.getCustomerName(custId);
 			ReservationInfo reservationInfo=getReservationInfoByReservationId(reservationId,reservationDAO);
 			CustomerProfileInfo customerProfileInfo=customerProfileInfoDAO.getCustomerProfileInfo(reservationInfo.getCustomerId());
 			PmsReservationInfo pmsReservationInfo=customerDAO.getReservationFromPMS(reservationId);
+			PropertyInfo propertyInfo=propertyDAO.getPropertyInfo(pmsReservationInfo.getPropertyId());
 			String roomNumber=pmsReservationInfo.getRoomNumber();
 			String customerSugarLevelPreference=customerProfileInfo.getCustomerSugarLevelPreference();
 			String customerTempraturePreference=customerProfileInfo.getCustomerTemperaturePreference();
@@ -88,6 +93,22 @@ String customerName = customerDAO.getCustomerName(custId);
 			}
 			
 			serviceResponse.setSpeech("We got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room number " + roomNumber+" in next 10 mins");
+			
+			//adding the service request to service request table
+			ServiceRequest serviceRequest=new ServiceRequest();
+			serviceRequest.setCustomerId(reservationInfo.getCustomerId());
+			serviceRequest.setDepartmentId("KTO");
+			serviceRequest.setExecutionTime(new Date());
+			serviceRequest.setPropertyId(propertyInfo.getPropertyId());
+			serviceRequest.setRequestDesc("Coffee Request");
+			serviceRequest.setRequestStatus("Requested");
+			serviceRequest.setRoomNo(roomNumber);
+			
+			Date dNow = new Date();
+	        SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
+	        String datetime = ft.format(dNow);
+			serviceRequest.setServiceRequestId(datetime);
+			serviceRequestDAO.insertServiceRequest(serviceRequest);
 		}
 		else if(inputAction.equalsIgnoreCase("pool.info")){
 			Context poolCrossSelling = new Context();
