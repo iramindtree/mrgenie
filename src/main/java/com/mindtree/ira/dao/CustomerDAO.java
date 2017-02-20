@@ -116,8 +116,8 @@ public class CustomerDAO {
         try {
               stmt = getConnection();
               ResultSet rs = stmt.executeQuery(query);
-              rs.next();
-              return rs.getInt("RESERVATION_CONF_NO");
+              if(rs.next())
+            	  return rs.getInt("RESERVATION_CONF_NO");
         } catch (SQLException e) {
               // TODO Auto-generated catch block
               e.printStackTrace();
@@ -129,7 +129,7 @@ public class CustomerDAO {
                     e.printStackTrace();
               }
         }
-		return -1;
+		return 86904389;
 	}
 
 }

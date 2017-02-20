@@ -8,7 +8,7 @@ public class IRAServiceResponse implements Serializable{
 	private String speech;
 	private String displayText;
 	private Object data;
-	private Context[] contextOut;
+	private AgentContextBean[] contextOut;
 	private String source;
 	
 	
@@ -30,10 +30,10 @@ public class IRAServiceResponse implements Serializable{
 	public void setData(Object data) {
 		this.data = data;
 	}
-	public Context[] getContextOut() {
+	public AgentContextBean[] getContextOut() {
 		return contextOut;
 	}
-	public void setContextOut(Context[] contextOut) {
+	public void setContextOut(AgentContextBean[] contextOut) {
 		this.contextOut = contextOut;
 	}
 	public String getSource() {

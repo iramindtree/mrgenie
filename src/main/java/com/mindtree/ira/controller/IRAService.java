@@ -26,6 +26,7 @@ import com.mindtree.ira.entity.PropertyAmenity;
 import com.mindtree.ira.entity.PropertyInfo;
 import com.mindtree.ira.entity.ReservationInfo;
 import com.mindtree.ira.entity.ServiceRequest;
+import com.mindtree.ira.response.bean.AgentContextBean;
 import com.mindtree.ira.response.bean.AgentResponseBean;
 import com.mindtree.ira.response.bean.Context;
 import com.mindtree.ira.response.bean.IRAServiceResponse;
@@ -36,6 +37,11 @@ import com.mindtree.ira.response.bean.IRAServiceResponse;
  */
 public class IRAService {
 
+	/**
+	 * @param responseBean
+	 * @param reservationId
+	 * @return
+	 */
 	public IRAServiceResponse processResponse(AgentResponseBean responseBean,int reservationId) {
 		IRAServiceResponse serviceResponse = new IRAServiceResponse();
 		CustomerDAO customerDAO=new CustomerDAO();
@@ -46,12 +52,16 @@ public class IRAService {
 		ServiceRequestDAO serviceRequestDAO=new ServiceRequestDAO();
 		ConsumptionDAO consumptionDAO=new ConsumptionDAO();
 		
+		ReservationInfo reservationInfo=getReservationInfoByReservationId(reservationId,reservationDAO);
+		CustomerProfileInfo customerProfileInfo=customerProfileInfoDAO.getCustomerProfileInfo(reservationInfo.getCustomerId());
+		PmsReservationInfo pmsReservationInfo=customerDAO.getReservationFromPMS(reservationId);
+		PropertyInfo propertyInfo=propertyDAO.getPropertyInfo(pmsReservationInfo.getPropertyId());
+		String roomNumber=pmsReservationInfo.getRoomNumber();
+		String customerName = customerDAO.getCustomerName(reservationInfo.getCustomerId());
 		String inputAction = responseBean.getResult().getAction();
 		
 		if (inputAction.equalsIgnoreCase("input.welcome")) {
-			ReservationInfo reservationInfo=getReservationInfoByReservationId(reservationId,reservationDAO);
 			String custId=reservationInfo.getCustomerId();
-String customerName = customerDAO.getCustomerName(custId);
 			if (null == customerName) {
 				serviceResponse.setSpeech("Hi");
 			} else {
@@ -59,17 +69,13 @@ String customerName = customerDAO.getCustomerName(custId);
 			}
 		}
 		else if(inputAction.equalsIgnoreCase("check_out.info")){
-			ReservationInfo reservationInfo=getReservationInfoByReservationId(reservationId,reservationDAO);
 			SimpleDateFormat prounanceDateString = new SimpleDateFormat("dd MMM YYYY");
 			SimpleDateFormat prounanceTimeString = new SimpleDateFormat("HH:mm a");
 			serviceResponse.setSpeech("Your check-out is "+ prounanceDateString.format(reservationInfo.getCheckoutDatetime()) +" at "+ prounanceTimeString.format(reservationInfo.getCheckoutDatetime()));
-		}else if(responseBean.getResult().getAction().equalsIgnoreCase("order.coffee")){
+		}
+		else if(responseBean.getResult().getAction().equalsIgnoreCase("order.coffee")){
 			String delivery="",kindofcoffee="",size="",typeofmilk="";
-			ReservationInfo reservationInfo=getReservationInfoByReservationId(reservationId,reservationDAO);
-			CustomerProfileInfo customerProfileInfo=customerProfileInfoDAO.getCustomerProfileInfo(reservationInfo.getCustomerId());
-			PmsReservationInfo pmsReservationInfo=customerDAO.getReservationFromPMS(reservationId);
-			PropertyInfo propertyInfo=propertyDAO.getPropertyInfo(pmsReservationInfo.getPropertyId());
-			String roomNumber=pmsReservationInfo.getRoomNumber();
+			
 			String customerSugarLevelPreference=customerProfileInfo.getCustomerSugarLevelPreference();
 			String customerTempraturePreference=customerProfileInfo.getCustomerTemperaturePreference();
 			if(!responseBean.getResult().getParameters().isEmpty()){
@@ -102,7 +108,7 @@ String customerName = customerDAO.getCustomerName(custId);
 			serviceRequest.setDepartmentId("KTO");
 			serviceRequest.setExecutionTime(new Date());
 			serviceRequest.setPropertyId(propertyInfo.getPropertyId());
-			serviceRequest.setRequestDesc("Coffee Request");
+			serviceRequest.setRequestDesc("Coffee Request -> kind: "+ kindofcoffee +", size: "+ size +", delivery: "+ delivery +", milk: "+ typeofmilk +", sugar: "+ customerSugarLevelPreference +", temp: "+ customerTempraturePreference);
 			serviceRequest.setRequestStatus("Requested");
 			serviceRequest.setRoomNo(roomNumber);
 			
@@ -112,14 +118,104 @@ String customerName = customerDAO.getCustomerName(custId);
 			serviceRequest.setServiceRequestId(datetime);
 			serviceRequestDAO.insertServiceRequest(serviceRequest);
 		}
+		//order.beer_budweiser
+		else if(responseBean.getResult().getAction().equalsIgnoreCase("order.beer")){
+			String brand="", size="", speach;
+			
+			if(!responseBean.getResult().getParameters().isEmpty()){
+				Map<String,Object> parameters=responseBean.getResult().getParameters();
+				Object brandObject=parameters.get("beed_brand");
+				List<String> brandList=(ArrayList<String>)brandObject;
+				if(brandList.size() !=0){
+					 brand=brandList.get(0);
+				}
+				
+				Object sizeObject=parameters.get("beer_size");
+				List<String> sizeList=(ArrayList<String>)sizeObject;
+				if(sizeList.size() !=0){
+					 size=sizeList.get(0);
+				}
+				
+			}
+			if(brand.equalsIgnoreCase("Heineken")){
+				speach = "Sorry "+ customerName +", looks like "+ brand +" beer is out of stock at the moment. Instead would you like to have Budwiser beer?";
+				serviceResponse.setContextOut((AgentContextBean[])responseBean.getResult().getContexts().toArray());
+			}
+			else{
+				speach = "Great! Your order of Budwiser beer will be served to your room " + roomNumber + " in next 10mins";
+				//adding the service request to service request table
+				ServiceRequest serviceRequest=new ServiceRequest();
+				serviceRequest.setCustomerId(reservationInfo.getCustomerId());
+				serviceRequest.setDepartmentId("KTO");
+				serviceRequest.setExecutionTime(new Date());
+				serviceRequest.setPropertyId(propertyInfo.getPropertyId());
+				serviceRequest.setRequestDesc("Beer Request -> Brand: "+ brand +", Size: "+ size);
+				serviceRequest.setRequestStatus("Requested");
+				serviceRequest.setRoomNo(roomNumber);
+				
+				Date dNow = new Date();
+		        SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
+		        String datetime = ft.format(dNow);
+				serviceRequest.setServiceRequestId(datetime);
+				serviceRequestDAO.insertServiceRequest(serviceRequest);
+			}
+						
+			serviceResponse.setSpeech(speach);
+			
+		}
+		
+		else if(responseBean.getResult().getAction().equalsIgnoreCase("order.pizza")){
+			String type="", toppings="", crust="", size="";
+			
+			if(!responseBean.getResult().getParameters().isEmpty()){
+				Map<String,Object> parameters=responseBean.getResult().getParameters();
+				Object typeObject=parameters.get("type");
+				List<String> typeList=(ArrayList<String>)typeObject;
+				if(typeList.size() !=0){
+					 type=typeList.get(0);
+				}
+				Object toppingsObject=parameters.get("topping");
+				List<String> toppingsList=(ArrayList<String>)toppingsObject;
+				if(toppingsList.size() !=0){
+					 toppings=toppingsList.get(0);
+				}
+				Object crustObject=parameters.get("crust");
+				List<String> crustList=(ArrayList<String>)crustObject;
+				if(crustList.size() !=0){
+					 crust=crustList.get(0);
+				}
+				Object sizeObject=parameters.get("size");
+				List<String> sizeList=(ArrayList<String>)sizeObject;
+				if(sizeList.size() !=0){
+					 size=sizeList.get(0);
+				}
+				
+			}
+			String speach = "Yum! A delicious "+ size +" size "+ type +" pizza with  " + toppings + " toppings will be delivered to your "+roomNumber+" as soon as you reach hotel!";			
+			serviceResponse.setSpeech(speach);
+			//adding the service request to service request table
+			ServiceRequest serviceRequest=new ServiceRequest();
+			serviceRequest.setCustomerId(reservationInfo.getCustomerId());
+			serviceRequest.setDepartmentId("KTO");
+			serviceRequest.setExecutionTime(new Date());
+			serviceRequest.setPropertyId(propertyInfo.getPropertyId());
+			serviceRequest.setRequestDesc("Pizza Request -> Size: "+ size +", Toppings: "+ toppings +", Crust: " + toppings);
+			serviceRequest.setRequestStatus("Requested");
+			serviceRequest.setRoomNo(roomNumber);
+			
+			Date dNow = new Date();
+	        SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
+	        String datetime = ft.format(dNow);
+			serviceRequest.setServiceRequestId(datetime);
+			serviceRequestDAO.insertServiceRequest(serviceRequest);
+		}
+				
 		else if(inputAction.equalsIgnoreCase("pool.info")){
-			Context poolCrossSelling = new Context();
+			AgentContextBean poolCrossSelling = new AgentContextBean();
 			poolCrossSelling.setLifespan(1);
 			poolCrossSelling.setName("pool_cross_selling");
-			Context[] poolCrossSellingContextArray = {poolCrossSelling};
+			AgentContextBean[] poolCrossSellingContextArray = {poolCrossSelling};
 			//TODO get todays date and get the amenities details and then compare the availability  
-			PmsReservationInfo pmsReservationInfo=customerDAO.getReservationFromPMS(reservationId);
-			PropertyInfo propertyInfo=propertyDAO.getPropertyInfo(pmsReservationInfo.getPropertyId());
 			PropertyAmenity propertyAmenity=propertyDAO.getPropertyAmenity(propertyInfo.getPropertyId(), "POOL");
 			MasterDate masterDate=masterDateDAO.getMasterDate();
 			String startTime,endTime,speech;
@@ -143,20 +239,16 @@ String customerName = customerDAO.getCustomerName(custId);
 			serviceResponse.setSpeech(speech);
 		}
 		else if(inputAction.equalsIgnoreCase("pool.crossselling")){
-			Context poolCrossSelling = new Context();
+			AgentContextBean poolCrossSelling = new AgentContextBean();
 			poolCrossSelling.setLifespan(1);
 			poolCrossSelling.setName("pool_cross_selling_confirm");
-			Context[] poolCrossSellingContextArray = {poolCrossSelling};
+			AgentContextBean[] poolCrossSellingContextArray = {poolCrossSelling};
 			
 			serviceResponse.setContextOut(poolCrossSellingContextArray);
 			serviceResponse.setDisplayText("What size shorts fit you well? ");
 			serviceResponse.setSpeech("What size shorts fit you well? ");
 		}
 		else if(inputAction.equalsIgnoreCase("order.pool_attire")){
-			
-			ReservationInfo reservationInfo=getReservationInfoByReservationId(reservationId,reservationDAO);
-			PmsReservationInfo pmsReservationInfo=customerDAO.getReservationFromPMS(reservationId);
-			PropertyInfo propertyInfo=propertyDAO.getPropertyInfo(pmsReservationInfo.getPropertyId());
 			
 			serviceResponse.setDisplayText("Got it. Your attire will be delivered to your room number "+pmsReservationInfo.getRoomNumber());
 			serviceResponse.setSpeech("Got it. Your attire will be delivered to your number room "+pmsReservationInfo.getRoomNumber());
@@ -177,16 +269,15 @@ String customerName = customerDAO.getCustomerName(custId);
 			serviceRequest.setServiceRequestId(datetime);
 			serviceRequestDAO.insertServiceRequest(serviceRequest);
 		}else if(inputAction.equalsIgnoreCase("consumption.info")){
-			ReservationInfo reservationInfo=getReservationInfoByReservationId(reservationId,reservationDAO);
 			long consumptionAmount=consumptionDAO.getConsumptionAmount(reservationInfo.getReservationConfNo());
 			SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
 			if(simpleDateFormat.format(reservationInfo.getCheckoutDatetime()).equals(simpleDateFormat.format(new Date()))){
 				serviceResponse.setSpeech("Your Consumption is $"+consumptionAmount+ " Would you like me to bill it to your credit card?");
 				serviceResponse.setDisplayText("Your Consumption is $"+consumptionAmount+ " Would you like me to bill it to your credit card?");
-				Context creditCardBilling = new Context();
+				AgentContextBean creditCardBilling = new AgentContextBean();
 				creditCardBilling.setLifespan(1);
 				creditCardBilling.setName("billing_credit_card_confirm");
-				Context[] creditCardBillingContextArray = {creditCardBilling};
+				AgentContextBean[] creditCardBillingContextArray = {creditCardBilling};
 				serviceResponse.setContextOut(creditCardBillingContextArray);
 			}else{
 				serviceResponse.setSpeech("Your Consumption till date is "+consumptionAmount+ " however your check-out date is "+new SimpleDateFormat("yyyy-MM-dd").format(reservationInfo.getCheckoutDatetime()));
@@ -194,10 +285,10 @@ String customerName = customerDAO.getCustomerName(custId);
 			}
 		}
 		else{
-			Context testContext = new Context();
+			AgentContextBean testContext = new AgentContextBean();
 			testContext.setName("Unknown_Action_Context");
 			testContext.setLifespan(1);
-			Context[] responseContextArray = new Context[1];
+			AgentContextBean[] responseContextArray = new AgentContextBean[1];
 			responseContextArray[0] = testContext;
 			serviceResponse.setContextOut(responseContextArray);
 			serviceResponse.setSpeech("I am not sure how to serve that. Let me see if u can find someone to help you with this request.");
