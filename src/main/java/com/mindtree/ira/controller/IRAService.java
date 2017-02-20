@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
+import com.mindtree.ira.dao.ConsumptionDAO;
 import com.mindtree.ira.dao.CustomerDAO;
 import com.mindtree.ira.dao.CustomerProfileInfoDAO;
 import com.mindtree.ira.dao.MasterDateDAO;
@@ -43,6 +44,7 @@ public class IRAService {
 		MasterDateDAO masterDateDAO=new MasterDateDAO();
 		CustomerProfileInfoDAO customerProfileInfoDAO=new CustomerProfileInfoDAO();
 		ServiceRequestDAO serviceRequestDAO=new ServiceRequestDAO();
+		ConsumptionDAO consumptionDAO=new ConsumptionDAO();
 		
 		String inputAction = responseBean.getResult().getAction();
 		
@@ -93,7 +95,7 @@ String customerName = customerDAO.getCustomerName(custId);
 			}
 			
 			serviceResponse.setSpeech("We got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room number " + roomNumber+" in next 10 mins");
-			
+			serviceResponse.setDisplayText("We got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room number " + roomNumber+" in next 10 mins");
 			//adding the service request to service request table
 			ServiceRequest serviceRequest=new ServiceRequest();
 			serviceRequest.setCustomerId(reservationInfo.getCustomerId());
@@ -174,6 +176,22 @@ String customerName = customerDAO.getCustomerName(custId);
 	        String datetime = ft.format(dNow);
 			serviceRequest.setServiceRequestId(datetime);
 			serviceRequestDAO.insertServiceRequest(serviceRequest);
+		}else if(inputAction.equalsIgnoreCase("consumption.info")){
+			ReservationInfo reservationInfo=getReservationInfoByReservationId(reservationId,reservationDAO);
+			long consumptionAmount=consumptionDAO.getConsumptionAmount(reservationInfo.getReservationConfNo());
+			SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+			if(simpleDateFormat.format(reservationInfo.getCheckoutDatetime()).equals(simpleDateFormat.format(new Date()))){
+				serviceResponse.setSpeech("Your Consumption is $"+consumptionAmount+ " Would you like me to bill it to your credit card?");
+				serviceResponse.setDisplayText("Your Consumption is $"+consumptionAmount+ " Would you like me to bill it to your credit card?");
+				Context creditCardBilling = new Context();
+				creditCardBilling.setLifespan(1);
+				creditCardBilling.setName("billing_credit_card_confirm");
+				Context[] creditCardBillingContextArray = {creditCardBilling};
+				serviceResponse.setContextOut(creditCardBillingContextArray);
+			}else{
+				serviceResponse.setSpeech("Your Consumption till date is "+consumptionAmount+ " however your check-out date is "+new SimpleDateFormat("yyyy-MM-dd").format(reservationInfo.getCheckoutDatetime()));
+				serviceResponse.setDisplayText("Your Consumption till date is "+consumptionAmount+ " however your check-out date is "+new SimpleDateFormat("yyyy-MM-dd").format(reservationInfo.getCheckoutDatetime()));
+			}
 		}
 		else{
 			Context testContext = new Context();
