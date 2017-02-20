@@ -151,7 +151,7 @@ public class IRAService {
 				serviceResponse.setContextOut(existingContextArray);
 			}
 			else{
-				speach = "Great! Your order of Budwiser beer will be served to your room " + roomNumber + " in next 10mins";
+				speach = "Great! Your order of "+ brand +" beer will be served to your room " + roomNumber + " in next 10mins";
 				//adding the service request to service request table
 				ServiceRequest serviceRequest=new ServiceRequest();
 				serviceRequest.setCustomerId(reservationInfo.getCustomerId());
