@@ -44,6 +44,7 @@ public class PropertyDAO {
 		} finally {
 			try {
 				stmt.close();
+				stmt.getConnection().close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -73,6 +74,7 @@ public class PropertyDAO {
 		} finally {
 			try {
 				stmt.close();
+				stmt.getConnection().close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
