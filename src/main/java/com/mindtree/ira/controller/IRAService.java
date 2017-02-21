@@ -86,7 +86,7 @@ public class IRAService {
 				if(deliveryList.size() !=0){
 					 delivery=deliveryList.get(0);
 				}
-				Object kindofcoffeeObject=parameters.get("kindofcoffee");
+				Object kindofcoffeeObject=parameters.get("Coffee_type");
 				List<String> kindofcoffeeList=(ArrayList<String>) kindofcoffeeObject;
 				if(kindofcoffeeList.size()!=0){
 					kindofcoffee=kindofcoffeeList.get(0);
