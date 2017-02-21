@@ -106,7 +106,7 @@ public class IRAService {
 			//adding the service request to service request table
 			ServiceRequest serviceRequest=new ServiceRequest();
 			serviceRequest.setCustomerId(reservationInfo.getCustomerId());
-			serviceRequest.setDepartmentId("KTO");
+			serviceRequest.setDepartmentId("KOT");
 			serviceRequest.setExecutionTime(new Date());
 			serviceRequest.setPropertyId(propertyInfo.getPropertyId());
 			serviceRequest.setRequestDesc("Coffee Request -> kind: "+ kindofcoffee +", size: "+ size +", delivery: "+ delivery +", milk: "+ typeofmilk +", sugar: "+ customerSugarLevelPreference +", temp: "+ customerTempraturePreference);
@@ -155,7 +155,7 @@ public class IRAService {
 				//adding the service request to service request table
 				ServiceRequest serviceRequest=new ServiceRequest();
 				serviceRequest.setCustomerId(reservationInfo.getCustomerId());
-				serviceRequest.setDepartmentId("KTO");
+				serviceRequest.setDepartmentId("KOT");
 				serviceRequest.setExecutionTime(new Date());
 				serviceRequest.setPropertyId(propertyInfo.getPropertyId());
 				serviceRequest.setRequestDesc("Beer Request -> Brand: "+ brand +", Size: "+ size);
@@ -205,7 +205,7 @@ public class IRAService {
 			//adding the service request to service request table
 			ServiceRequest serviceRequest=new ServiceRequest();
 			serviceRequest.setCustomerId(reservationInfo.getCustomerId());
-			serviceRequest.setDepartmentId("KTO");
+			serviceRequest.setDepartmentId("KOT");
 			serviceRequest.setExecutionTime(new Date());
 			serviceRequest.setPropertyId(propertyInfo.getPropertyId());
 			serviceRequest.setRequestDesc("Pizza Request -> Size: "+ size +", Toppings: "+ toppings +", Crust: " + toppings);
