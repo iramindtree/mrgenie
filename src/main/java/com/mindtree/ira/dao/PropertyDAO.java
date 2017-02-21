@@ -43,8 +43,8 @@ public class PropertyDAO {
 			sqle.printStackTrace();
 		} finally {
 			try {
-				stmt.close();
 				stmt.getConnection().close();
+				stmt.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -73,8 +73,8 @@ public class PropertyDAO {
 			sqle.printStackTrace();
 		} finally {
 			try {
-				stmt.close();
 				stmt.getConnection().close();
+				stmt.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
