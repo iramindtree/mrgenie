@@ -260,7 +260,7 @@ public class IRAService {
 		else if(inputAction.equalsIgnoreCase("order.pool_attire")){
 			
 			serviceResponse.setDisplayText("Got it. Your attire will be delivered to your room number "+pmsReservationInfo.getRoomNumber());
-			serviceResponse.setSpeech("Got it. Your attire will be delivered to your number room "+pmsReservationInfo.getRoomNumber());
+			serviceResponse.setSpeech("Got it. Your attire will be delivered to your room number"+pmsReservationInfo.getRoomNumber());
 			
 			
 			ServiceRequest serviceRequest=new ServiceRequest();
