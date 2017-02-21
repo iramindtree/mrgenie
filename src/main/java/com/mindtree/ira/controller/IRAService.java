@@ -281,16 +281,16 @@ public class IRAService {
 			long consumptionAmount=consumptionDAO.getConsumptionAmount(reservationInfo.getReservationConfNo());
 			SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
 			if(simpleDateFormat.format(reservationInfo.getCheckoutDatetime()).equals(simpleDateFormat.format(new Date()))){
-				serviceResponse.setSpeech("Your Consumption is $"+consumptionAmount+ " Would you like me to bill it to your credit card?");
-				serviceResponse.setDisplayText("Your Consumption is $"+consumptionAmount+ " Would you like me to bill it to your credit card?");
+				serviceResponse.setSpeech("Your Final Consumption Amount is $"+consumptionAmount);
+				serviceResponse.setDisplayText("Your Final Consumption Amount is $"+consumptionAmount);
 				AgentContextBean creditCardBilling = new AgentContextBean();
 				creditCardBilling.setLifespan(1);
 				creditCardBilling.setName("billing_credit_card_confirm");
 				AgentContextBean[] creditCardBillingContextArray = {creditCardBilling};
 				serviceResponse.setContextOut(creditCardBillingContextArray);
 			}else{
-				serviceResponse.setSpeech("Your Consumption till date is "+consumptionAmount+ " however your check-out date is "+new SimpleDateFormat("yyyy-MM-dd").format(reservationInfo.getCheckoutDatetime()));
-				serviceResponse.setDisplayText("Your Consumption till date is "+consumptionAmount+ " however your check-out date is "+new SimpleDateFormat("yyyy-MM-dd").format(reservationInfo.getCheckoutDatetime()));
+				serviceResponse.setSpeech("Your Consumption as of now is $"+consumptionAmount+ " however your check-out date is "+new SimpleDateFormat("yyyy-MM-dd").format(reservationInfo.getCheckoutDatetime()));
+				serviceResponse.setDisplayText("Your Consumption as of now is $"+consumptionAmount+ " however your check-out date is "+new SimpleDateFormat("yyyy-MM-dd").format(reservationInfo.getCheckoutDatetime()));
 			}
 		}
 		else{
