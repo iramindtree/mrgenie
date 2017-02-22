@@ -18,13 +18,13 @@ public class DBUtil {
 		Connection conn = null;
 		try {
 			String dbUrl = System.getenv("JDBC_DATABASE_URL");
-			//System.out.println("dbUrl" + dbUrl);
+			System.out.println("dbUrl" + dbUrl);
+			//conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mrgenei?reconnect=true&user=root&password=Welcome123");
 			conn = DriverManager.getConnection(dbUrl);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return conn;
 	}
 }
