@@ -3,11 +3,11 @@
  */
 package com.mindtree.ira.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +20,7 @@ import com.mindtree.ira.dao.MasterDateDAO;
 import com.mindtree.ira.dao.PropertyDAO;
 import com.mindtree.ira.dao.ReservationDAO;
 import com.mindtree.ira.dao.ServiceRequestDAO;
+import com.mindtree.ira.entity.AbandonInteraction;
 import com.mindtree.ira.entity.CustomerProfileInfo;
 import com.mindtree.ira.entity.MasterDate;
 import com.mindtree.ira.entity.PmsReservationInfo;
@@ -29,7 +30,6 @@ import com.mindtree.ira.entity.ReservationInfo;
 import com.mindtree.ira.entity.ServiceRequest;
 import com.mindtree.ira.response.bean.AgentContextBean;
 import com.mindtree.ira.response.bean.AgentResponseBean;
-import com.mindtree.ira.response.bean.Context;
 import com.mindtree.ira.response.bean.IRAServiceResponse;
 
 /**
@@ -235,7 +235,7 @@ public class IRAService {
 				startTime=propertyAmenity.getOpenTime().toString();
 				endTime=propertyAmenity.getClosingTime().toString();
 				 SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
-				speech="Our Swimming Pool will be open from "+_12HourSDF.format(propertyAmenity.getOpenTime())+" to "+_12HourSDF.format(propertyAmenity.getClosingTime())+", To use the pool, you need to have swim attire. If you don't have one, would you like me to get one for you? ";
+				speech="Our Swimming Pool will be open from "+_12HourSDF.format(propertyAmenity.getOpenTime())+" to "+_12HourSDF.format(propertyAmenity.getClosingTime())+". To use the pool, you need to have swim attire. If you don't have one, would you like me to get one for you? ";
 			}
 			else{
 				speech="Sorry Swimming Pool will closed Today";
@@ -259,8 +259,8 @@ public class IRAService {
 		}
 		else if(inputAction.equalsIgnoreCase("order.pool_attire")){
 			
-			serviceResponse.setDisplayText("Got it. Your attire will be delivered to your room number "+pmsReservationInfo.getRoomNumber());
-			serviceResponse.setSpeech("Got it. Your attire will be delivered to your room number"+pmsReservationInfo.getRoomNumber());
+			serviceResponse.setDisplayText("Got it. Your attire will be delivered to your room number "+pmsReservationInfo.getRoomNumber() +". You can find the pool right next to the bar near lobby.");
+			serviceResponse.setSpeech("Got it. Your attire will be delivered to your room number"+pmsReservationInfo.getRoomNumber()+". You can find the pool right next to the bar near lobby.");
 			
 			
 			ServiceRequest serviceRequest=new ServiceRequest();
@@ -292,6 +292,53 @@ public class IRAService {
 				serviceResponse.setSpeech("Your Consumption as of now is $"+consumptionAmount+ " however your check-out date is "+new SimpleDateFormat("yyyy-MM-dd").format(reservationInfo.getCheckoutDatetime()));
 				serviceResponse.setDisplayText("Your Consumption as of now is $"+consumptionAmount+ " however your check-out date is "+new SimpleDateFormat("yyyy-MM-dd").format(reservationInfo.getCheckoutDatetime()));
 			}
+		}else if(inputAction.equalsIgnoreCase("do-not_book.hotel")){
+			Date checkInDate=null;
+			Date checkOutDate=null;
+			String geoCity = null;
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			if(!responseBean.getResult().getParameters().isEmpty()){
+				Map<String,Object> parameters=responseBean.getResult().getParameters();
+				Object checkInDateObj=parameters.get("check-in-date");
+				if(!StringUtils.isEmpty(checkInDateObj)){
+					try {
+						checkInDate=sdf.parse(checkInDateObj.toString());
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
+				}
+				Object checkOutDateObj=parameters.get("check-out-date");
+				if(!StringUtils.isEmpty(checkOutDateObj)){
+					try {
+						checkOutDate=sdf.parse(checkOutDateObj.toString());
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
+				}
+				
+				Object geoCityObj=parameters.get("geo-city");
+				if(!StringUtils.isEmpty(geoCityObj)){
+					geoCity=geoCityObj.toString();	
+				}
+				
+			}
+			serviceResponse.setSpeech("No problem, you may always come back to me on this");
+			serviceResponse.setDisplayText("No problem, you may always come back to me on this");
+			//customerProfileInfo
+			AbandonInteraction abandonInteraction=new AbandonInteraction();
+			abandonInteraction.setCheckInDate(checkInDate);
+			abandonInteraction.setCheckOutDate(checkOutDate);
+			abandonInteraction.setCustomerId(customerProfileInfo.getCustomerId());
+			abandonInteraction.setDestinationCity(geoCity);
+			abandonInteraction.setInteractionDateTimestamp(new Date());
+			abandonInteraction.setInteractionSource("ai");
+			abandonInteraction.setIteractionType("Abandon Search");
+			
+			ServiceRequestDAO seDao=new ServiceRequestDAO();
+			seDao.insertIntoAbandonSearch(abandonInteraction);
+			
 		}
 		else{
 			AgentContextBean testContext = new AgentContextBean();

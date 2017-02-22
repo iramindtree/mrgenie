@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
+import com.mindtree.ira.entity.AbandonInteraction;
 import com.mindtree.ira.entity.ServiceRequest;
 
 /**
@@ -37,6 +38,31 @@ public class ServiceRequestDAO {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void insertIntoAbandonSearch(AbandonInteraction abandonInteraction){
+		SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat simpleDateFormatheckInCheckOut=new SimpleDateFormat("yyyy-MM-dd");
+		
+		String query = "INSERT INTO abandon_interaction(Customer_ID,Iteraction_type, Interaction_source, Interaction_date_timestamp, destination_city, check_in_date, check_out_date) VALUES ('"+abandonInteraction.getCustomerId()+"','"+abandonInteraction.getIteractionType()+"','"+abandonInteraction.getInteractionSource()+"','"+simpleDateFormat.format(abandonInteraction.getInteractionDateTimestamp())+"','"+abandonInteraction.getDestinationCity()+"','"+simpleDateFormatheckInCheckOut.format(abandonInteraction.getCheckInDate())+"','"+simpleDateFormatheckInCheckOut.format(abandonInteraction.getCheckOutDate())+"')";
+		System.out.println(query);
+		Statement stmt = null;
+		try {
+			stmt = getConnection();
+			stmt.executeUpdate(query);
+			
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} finally {
+			try {
+				stmt.getConnection().close();
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 	private Statement getConnection() throws SQLException {

@@ -139,4 +139,16 @@ CREATE TABLE master_date (
   PRIMARY KEY (master_date)
 );
 
+CREATE TABLE abandon_interaction (
+  Customer_ID varchar(45) NOT NULL,
+  Interaction_ID int(11) NOT NULL AUTO_INCREMENT,
+  Iteraction_type varchar(45) NOT NULL,
+  Interaction_source varchar(45) NOT NULL,
+  Interaction_date_timestamp datetime NOT NULL,
+  destination_city varchar(45) NOT NULL,
+  check_in_date datetime NOT NULL,
+  check_out_date datetime NOT NULL,
+  PRIMARY KEY (Interaction_ID)
+);
+
   
