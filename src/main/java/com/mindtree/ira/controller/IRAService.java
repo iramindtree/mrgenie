@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.util.StringUtils;
 
 import com.mindtree.ira.dao.ConsumptionDAO;
@@ -72,7 +73,17 @@ public class IRAService {
 		else if(inputAction.equalsIgnoreCase("check_out.info")){
 			SimpleDateFormat prounanceDateString = new SimpleDateFormat("dd MMM YYYY");
 			SimpleDateFormat prounanceTimeString = new SimpleDateFormat("HH:mm a");
-			serviceResponse.setSpeech("Your check-out is "+ prounanceDateString.format(reservationInfo.getCheckoutDatetime()) +" at "+ prounanceTimeString.format(reservationInfo.getCheckoutDatetime()));
+			if(DateUtils.isSameDay(masterDateDAO.getMasterDate().getMasterDate(), reservationInfo.getCheckinDatetime())){
+                serviceResponse.setSpeech("Your check-out is today at "+ prounanceTimeString.format(reservationInfo.getCheckoutDatetime()) +". Would you like me to book a cab to the airport?");
+                AgentContextBean conciergeServices = new AgentContextBean();
+                conciergeServices.setLifespan(1);
+                conciergeServices.setName("book_cab_airport");
+                AgentContextBean[] conciergeServiceContextArray = {conciergeServices};
+                serviceResponse.setContextOut(conciergeServiceContextArray);
+          }
+          else
+                serviceResponse.setSpeech("Your check-out is "+ prounanceDateString.format(reservationInfo.getCheckoutDatetime()) +" at "+ prounanceTimeString.format(reservationInfo.getCheckoutDatetime()));
+
 		}
 		else if(responseBean.getResult().getAction().equalsIgnoreCase("order.coffee")){
 			String delivery="",kindofcoffee="",size="",typeofmilk="";
@@ -280,7 +291,7 @@ public class IRAService {
 		}else if(inputAction.equalsIgnoreCase("consumption.info")){
 			long consumptionAmount=consumptionDAO.getConsumptionAmount(reservationInfo.getReservationConfNo());
 			SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-			if(simpleDateFormat.format(reservationInfo.getCheckoutDatetime()).equals(simpleDateFormat.format(new Date()))){
+			if(simpleDateFormat.format(reservationInfo.getCheckoutDatetime()).equals(simpleDateFormat.format(masterDateDAO.getMasterDate().getMasterDate()))){
 				serviceResponse.setSpeech("Your Final Consumption Amount is $"+consumptionAmount);
 				serviceResponse.setDisplayText("Your Final Consumption Amount is $"+consumptionAmount);
 				AgentContextBean creditCardBilling = new AgentContextBean();
@@ -347,8 +358,8 @@ public class IRAService {
 			AgentContextBean[] responseContextArray = new AgentContextBean[1];
 			responseContextArray[0] = testContext;
 			serviceResponse.setContextOut(responseContextArray);
-			serviceResponse.setSpeech("I am not sure how to serve that. Let me see if u can find someone to help you with this request.");
-			serviceResponse.setDisplayText("I am not sure how to serve that. Let me see if u can find someone to help you with this request.");
+			serviceResponse.setSpeech("I am not sure how to serve that. Let me see if i can find someone to help you with this request.");
+			serviceResponse.setDisplayText("I am not sure how to serve that. Let me see if i can find someone to help you with this request.");
 		}
 		return serviceResponse;
 	}
