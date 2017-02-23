@@ -73,7 +73,7 @@ public class IRAService {
 		else if(inputAction.equalsIgnoreCase("check_out.info")){
 			SimpleDateFormat prounanceDateString = new SimpleDateFormat("dd MMM YYYY");
 			SimpleDateFormat prounanceTimeString = new SimpleDateFormat("HH:mm a");
-			if(DateUtils.isSameDay(masterDateDAO.getMasterDate().getMasterDate(), reservationInfo.getCheckinDatetime())){
+			if(DateUtils.isSameDay(masterDateDAO.getMasterDate().getMasterDate(), reservationInfo.getCheckoutDatetime())){
                 serviceResponse.setSpeech("Your check-out is today at "+ prounanceTimeString.format(reservationInfo.getCheckoutDatetime()) +". Would you like me to book a cab to the airport?");
                 AgentContextBean conciergeServices = new AgentContextBean();
                 conciergeServices.setLifespan(1);
