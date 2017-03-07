@@ -130,19 +130,19 @@ public class IRAService {
 			}
 			if(reservationInfo.getReservationConfNo()==19736383){
 				if(amount.equalsIgnoreCase("")||unit.equalsIgnoreCase("")){
-					serviceResponse.setSpeech("We got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to you near pool area in next 10 mins");
-					serviceResponse.setDisplayText("We got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to you near pool area in next 10 mins");
+					serviceResponse.setSpeech("I got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to you in the lobby by next 10 min");
+					serviceResponse.setDisplayText("I got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to you in the lobby by next 10 min");
 				}else{
-					serviceResponse.setSpeech("We got your Order. Your "+amount+" "+unit+" "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to you near pool area in next 10 mins");
-					serviceResponse.setDisplayText("We got your Order. Your "+amount+" "+unit+" "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to you near pool area in next 10 mins");
+					serviceResponse.setSpeech("I got your Order. Your "+amount+" "+unit+" "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to you in the lobby by next 10 min");
+					serviceResponse.setDisplayText("I got your Order. Your "+amount+" "+unit+" "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to you in the lobby by next 10 min");
 				}
 			}else{
 				if(amount.equalsIgnoreCase("")||unit.equalsIgnoreCase("")){
-				serviceResponse.setSpeech("We got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room number " + roomNumber+" in next 10 mins");
-				serviceResponse.setDisplayText("We got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room number " + roomNumber+" in next 10 mins");
+				serviceResponse.setSpeech("I got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room number " + roomNumber+" in next 10 mins");
+				serviceResponse.setDisplayText("I got your Order. Your "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room number " + roomNumber+" in next 10 mins");
 				}else{
-					serviceResponse.setSpeech("We got your Order. Your "+amount+" "+unit+" "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room number " + roomNumber+" in next 10 mins");
-					serviceResponse.setDisplayText("We got your Order. Your "+amount+" "+unit+" "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room number " + roomNumber+" in next 10 mins");
+					serviceResponse.setSpeech("I got your Order. Your "+amount+" "+unit+" "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room number " + roomNumber+" in next 10 mins");
+					serviceResponse.setDisplayText("I got your Order. Your "+amount+" "+unit+" "+kindofcoffee+" with "+typeofmilk+" milk and "+customerSugarLevelPreference+" of sugar at "+customerTempraturePreference+" Temprature will be served to your room number " + roomNumber+" in next 10 mins");
 				}
 			}
 			//adding the service request to service request table
@@ -246,7 +246,7 @@ public class IRAService {
 				}
 				
 			}
-			String speach = "Yum! A delicious "+ size +" size "+ type +" pizza with  " + toppings + " toppings will be delivered to your "+roomNumber+" as soon as you reach hotel!";			
+			String speach = "A delicious "+ size +" size "+ type +" pizza with  " + toppings + " toppings will be delivered to your "+roomNumber+" as soon as you reach hotel!";			
 			serviceResponse.setSpeech(speach);
 			//adding the service request to service request table
 			ServiceRequest serviceRequest=new ServiceRequest();
