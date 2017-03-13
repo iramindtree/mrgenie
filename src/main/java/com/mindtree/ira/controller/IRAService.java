@@ -197,7 +197,7 @@ public class IRAService {
 				serviceResponse.setContextOut(existingContextArray);
 			}
 			else{
-				speach = "Great! Your order of "+ brand +" beer will be served to your room " + roomNumber + " in next 10mins";
+				speach = "Great! Your order of "+ brand +" beer will be served to your room " + roomNumber + " in next 10 minutes";
 				//adding the service request to service request table
 				ServiceRequest serviceRequest=new ServiceRequest();
 				serviceRequest.setCustomerId(reservationInfo.getCustomerId());
@@ -263,9 +263,19 @@ public class IRAService {
 	        String datetime = ft.format(dNow);
 			serviceRequest.setServiceRequestId(datetime);
 			serviceRequestDAO.insertServiceRequest(serviceRequest);
-		}
-				
-		else if(inputAction.equalsIgnoreCase("pool.info")){
+		}else if(responseBean.getResult().getAction().equalsIgnoreCase("Pizza.demo")){
+			String speech = "I can help with that. Would you like me to get you a medium sized pepperoni pizza with onion, tomato toppings and some extra cheese?";			
+			serviceResponse.setDisplayText(speech);
+			serviceResponse.setSpeech(speech);
+		}else if(responseBean.getResult().getAction().equalsIgnoreCase("Pizza_demo_yes")){
+			String speech = "I took your order. It will be delivered to you in the lobby in 20 minutes.  Can I get your Heineken as well?";			
+			serviceResponse.setDisplayText(speech);
+			serviceResponse.setSpeech(speech);
+		}else if(responseBean.getResult().getAction().equalsIgnoreCase("Pizza_demo_beer_yes")){
+			String speech = "Amit, your pizza is ready and would you like to have it near the pool?";			
+			serviceResponse.setDisplayText(speech);
+			serviceResponse.setSpeech(speech);
+		}else if(inputAction.equalsIgnoreCase("pool.info")){
 			AgentContextBean poolCrossSelling = new AgentContextBean();
 			poolCrossSelling.setLifespan(1);
 			poolCrossSelling.setName("pool_cross_selling");
@@ -306,7 +316,7 @@ public class IRAService {
 		else if(inputAction.equalsIgnoreCase("order.pool_attire")){
 			
 			serviceResponse.setDisplayText("Got it. Your attire will be delivered to your room number "+pmsReservationInfo.getRoomNumber() +". You can find the pool right next to the bar near lobby.");
-			serviceResponse.setSpeech("Got it. Your attire will be delivered to your room number"+pmsReservationInfo.getRoomNumber()+". You can find the pool right next to the bar near lobby.");
+			serviceResponse.setSpeech("Got it. Your attire will be delivered to your room number "+pmsReservationInfo.getRoomNumber()+". You can find the pool right next to the bar near lobby.");
 			
 			
 			ServiceRequest serviceRequest=new ServiceRequest();
