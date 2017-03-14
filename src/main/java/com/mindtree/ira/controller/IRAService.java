@@ -276,11 +276,11 @@ public class IRAService {
 			serviceResponse.setDisplayText(speech);
 			serviceResponse.setSpeech(speech);
 		}else if(responseBean.getResult().getAction().equalsIgnoreCase("TV_show_yes")){
-			String speech = "Yankees are doing great against Giants so far and score is at 10 to 2. Would you like to watch the match LIVE? I can put it on TV.";			
+			String speech = "Yankees are doing great against Braves so far and score is at 8 to 0. Would you like to watch the match LIVE? I can put it on TV.";			
 			serviceResponse.setDisplayText(speech);
 			serviceResponse.setSpeech(speech);
 		}else if(responseBean.getResult().getAction().equalsIgnoreCase("Play_ESPN_on_TV")){
-			String speech = "playing ESPN on TV in living room. Amit would you like me to set the room temperature to 69 degrees as you like?";			
+			String speech = "playing live match on TV in living room. Amit would you like me to set the room temperature to 22 degrees celsius as you like?";			
 			serviceResponse.setDisplayText(speech);
 			serviceResponse.setSpeech(speech);
 		}else if(inputAction.equalsIgnoreCase("pool.info")){
