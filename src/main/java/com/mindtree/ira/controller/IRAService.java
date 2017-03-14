@@ -280,7 +280,7 @@ public class IRAService {
 			serviceResponse.setDisplayText(speech);
 			serviceResponse.setSpeech(speech);
 		}else if(responseBean.getResult().getAction().equalsIgnoreCase("Play_ESPN_on_TV")){
-			String speech = "playing live match on TV in living room. Amit would you like me to set the room temperature to 22 degrees celsius as you like?";			
+			String speech = "playing live match on TV in living room. Amit would you like me to set the room temperature to 18 degrees celsius as you like?";			
 			serviceResponse.setDisplayText(speech);
 			serviceResponse.setSpeech(speech);
 		}else if(inputAction.equalsIgnoreCase("pool.info")){
